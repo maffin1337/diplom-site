@@ -1,0 +1,29 @@
+.navbar{
+    background-color: #fefefe;
+}
+.nav-logo{
+    margin-left: 50px;
+    height: 100px;
+    width: 178px;
+}
+.nav-link{
+    color: #ff8b03;
+    margin-right: 75px;
+    font-size: 24px;
+}
+.nav-link:first-child{
+    margin-left: 300px;
+}
+
+@media (max-width: 1400px) {
+    .nav-logo{
+        margin-left: 20px;
+    }
+    .nav-link{
+        margin-right: 0px;
+        margin-left: 20px;
+    }
+    .nav-link:first-child{
+        margin-left: 20px;
+    }
+}

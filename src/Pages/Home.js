@@ -1,5 +1,9 @@
+import "./Home.css";
 import React from "react";
+import { Container } from "react-bootstrap";
 
 export const Home = () => (
-    <h1>Home Page</h1>
+    <Container className="news-carousell">
+
+    </Container>
 )
