@@ -1,4 +1,68 @@
+/*news*/
 .news-carousell{
-    height: 300px;
+    height: 600px;
     background-color: #2b2a29;
+}
+
+/*events*/
+.events{
+    height: auto;
+    background-color: #fefefe;
+}
+.events-head-text{
+    padding-top: 20px;
+    font-size: 24px;
+    text-align: center;
+}
+
+/*master-classes*/
+.master-class-main{
+    height: auto;
+    background-color: #2b2a29;
+}
+.mc-head-text{
+    padding-top: 20px;
+    font-size: 32px;
+    color: #fefefe;
+    text-align: center;
+}
+.mc-main-text{
+    font-size: 24px;
+    color: #fefefe;
+    text-align: center;
+    padding-top: 20px;
+}
+.mc-button{
+    width: 200px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: #ff8b03;
+    border-color: #ff8b03;
+    font-size: 20px;
+    color: #2b2a29;
+    text-align: center;
+}
+.mc-button:hover{
+    background-color: #ee8003;
+    border-color: #ee8003;
+}
+
+
+/*contest*/
+
+.contest-main{
+    height: auto;
+    background-color: #fefefe;
+}
+.contest-head-text{
+    text-align: center;
+    color: #000;
+    font-size: 32px;
+    padding-top: 20px;
+}
+.contest-main-text{
+    padding-top: 20px;
+    font-size: 24px;
+    color: #000;
+    text-align: center;
 }
