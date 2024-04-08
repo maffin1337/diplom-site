@@ -1,6 +1,7 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import NaviBar from "./Components/Navibar";
+import Footer from "./Components/Footer";
 import { BrowserRouter as Router,
   Routes,
   Route,
@@ -25,6 +26,7 @@ function App() {
       <Route path="/contest" Component={Contest} />
     </Routes>
     </Router>
+    <Footer />
     </>
   );
 }
