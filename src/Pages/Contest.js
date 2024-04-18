@@ -1,8 +1,47 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import {Container, Dropdown, DropdownButton, Form} from "react-bootstrap";
+import Axios from "axios";
 import "./Contest.css";
 
-function DropdownMenu() {
+function AddContest(){
+
+    const [style, setStyle] = useState("");
+    const [numberName, setNumberName] = useState("");
+    const [crewName, setCrewName] = useState("");
+    const [director, setDirector] = useState("");
+    const [crewCount, setCrewCount] = useState("");
+
+    const titleToVar = (title) => {
+        setStyle(title);
+    }
+
+    const addContest = () => {
+        Axios.post("http://localhost:3002/api/addcontest", {style: style, numberName: numberName, crewName: crewName, director: director, crewCount: crewCount})
+    }
+
+    return (
+        <div className="contest-form">
+            <Form>
+                <DropdownMenu className="contest-form-item" onTitleChange={titleToVar}/>
+                <Form.Control className="contest-form-item" type="text" onChange={(e) => {
+                    setNumberName(e.target.value)
+                }} placeholder="Название номера" />
+                <Form.Control className="contest-form-item" type="text" onChange={(e) => {
+                    setCrewName(e.target.value)
+                }} placeholder="Название команды" />
+                <Form.Control className="contest-form-item" type="text" onChange={(e) => {
+                    setDirector(e.target.value)
+                }} placeholder="ФИО руководителя" />
+                <Form.Control className="contest-form-item" type="number" onChange={(e) => {
+                    setCrewCount(e.target.value)
+                }} placeholder="Количество участников" />
+                <Form.Control className="contest-form-item" type="submit" onClick={addContest} placeholder="Отправить" />
+            </Form>
+        </div>
+    )
+}
+
+function DropdownMenu({ onTitleChange }) {
     // State to manage the title of the dropdown
     const [title, setTitle] = useState('Выберите направление');
   
@@ -10,6 +49,7 @@ function DropdownMenu() {
     const handleSelect = (eventKey) => {
       // Update the title based on the selected option
       setTitle(eventKey);
+      onTitleChange(eventKey);
     };
   
     return (
@@ -29,21 +69,15 @@ function DropdownMenu() {
     );
   }
   
-  export default DropdownMenu;
+  //export default DropdownMenu;
+  export default AddContest;
 
 
 export const Contest = () => (
     <>
         <Container className="contest-container">
             <div className="contest-form">
-                <Form>
-                    <DropdownMenu className="contest-form-item" />
-                    <Form.Control className="contest-form-item" type="text" placeholder="Название номера" />
-                    <Form.Control className="contest-form-item" type="text" placeholder="Название команды" />
-                    <Form.Control className="contest-form-item" type="text" placeholder="ФИО руководителя" />
-                    <Form.Control className="contest-form-item" type="number" placeholder="Количество участников" />
-                    <Form.Control className="contest-form-item" type="submit" placeholder="Отправить" />
-                </Form>
+                <AddContest/>
             </div>
             <div className="contest-info">
                 <p>Перед заполнением заявки на конкурс, прочтите положение конкурса</p>
