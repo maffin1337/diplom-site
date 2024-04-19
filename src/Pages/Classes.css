@@ -1,0 +1,36 @@
+.classes-container{
+    background-color: #2b2a29;
+}
+
+.dance-class{
+    display: flex;
+    align-items: center;
+}
+
+.dance-class-img{
+    height: 25%;
+    width: 25%;
+}
+
+.dance-class-first{
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.dance-class-text{
+    padding-left: 30px;
+    color: #fefefe;
+    font-size: 18px;
+}
+
+.classes-signin-button{
+    margin-left: 30px;
+    background-color: #ff8b03;
+    border-color: #ff8b03;
+    color: #2b2a29;
+}
+
+.classes-signin-button:hover{
+    background-color: #ee8003;
+    border-color: #ee8003;
+}

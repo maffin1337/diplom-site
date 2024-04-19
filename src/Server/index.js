@@ -20,9 +20,29 @@ app.post("/api/addcontest", (req, res)=> {
     db.query("INSERT INTO contest (Style, NumberName, CrewName, Director, CrewCount) VALUES (?,?,?,?,?)",[style,numberName,crewName,director,crewCount], (err,result)=> {
         if(err) {
             console.log(err)
+            return;
         }
         console.log(result)
     });
+})
+
+app.post("/api/addclass", (req, res) => {
+    
+    const classes = req.body.classes;
+    const fullName = req.body.fullName;
+
+    console.log(classes, fullName)
+
+    switch (classes) {
+        case 'dance_class10':
+            db.query("INSERT INTO dance_class10 (FullName) VALUES (?)", [fullName], (err, result) => {
+                if (err) {
+                    console.log(err)
+                    return;
+                }
+                console.log(result)
+            });
+    }
 })
 
 app.listen(PORT, () => {
