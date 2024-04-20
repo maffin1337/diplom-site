@@ -42,6 +42,61 @@ app.post("/api/addclass", (req, res) => {
                 }
                 console.log(result)
             });
+            break;
+        case 'dance_class11':
+            db.query("INSERT INTO dance_class11 (FullName) VALUES (?)", [fullName], (err, result) => {
+                if (err) {
+                    console.log(err)
+                    return;
+                }
+                console.log(result)
+            });
+            break;
+        case 'dance_class12':
+            db.query("INSERT INTO dance_class12 (FullName) VALUES (?)", [fullName], (err, result) => {
+                if (err) {
+                    console.log(err)
+                    return;
+                }
+                console.log(result)
+            });
+            break;
+        case 'art_class10':
+            db.query("INSERT INTO art_class10 (FullName) VALUES (?)", [fullName], (err, result) => {
+                if (err) {
+                    console.log(err)
+                    return;
+                }
+                console.log(result)
+            });
+            break;
+        case 'art_class11':
+            db.query("INSERT INTO art_class11 (FullName) VALUES (?)", [fullName], (err, result) => {
+                if (err) {
+                    console.log(err)
+                    return;
+                }
+                console.log(result)
+            });
+            break;
+        case 'art_class12':
+            db.query("INSERT INTO art_class12 (FullName) VALUES (?)", [fullName], (err, result) => {
+                if (err) {
+                    console.log(err)
+                    return;
+                }
+                console.log(result)
+            });
+            break;
+        case 'art_class13':
+            db.query("INSERT INTO art_class13 (FullName) VALUES (?)", [fullName], (err, result) => {
+                if (err) {
+                    console.log(err)
+                    return;
+                }
+                console.log(result)
+            });
+            break;
     }
 })
 
