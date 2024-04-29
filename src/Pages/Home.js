@@ -1,16 +1,12 @@
 import "./Home.css";
 import React from "react";
 import { Container, Button } from "react-bootstrap";
+import SliderHome from "../Components/SliderHome";
 
 export const Home = () => (
     <>
     <Container className="news-carousell">
-
-    </Container>
-    <Container className="events">
-        <div className="events-head-text">
-            <p>Ближайшие мероприятия</p>
-        </div>
+        <SliderHome />
     </Container>
     <Container className="master-class-main">
         <div className="mc-head-text">

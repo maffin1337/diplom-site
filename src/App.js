@@ -12,6 +12,7 @@ import {News} from "./Pages/News";
 import {Classes} from "./Pages/Classes";
 import {About} from "./Pages/About";
 import {Contest} from "./Pages/Contest";
+import {AddNews} from "./Pages/AddNews";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
       <Route path="/classes" Component={Classes} />
       <Route path="/about" Component={About} />
       <Route path="/contest" Component={Contest} />
+      <Route path="/addnews" Component={AddNews} />
     </Routes>
     </Router>
     <Footer />
