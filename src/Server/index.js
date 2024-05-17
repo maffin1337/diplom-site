@@ -3,10 +3,15 @@ const db = require("./config/db")
 const cors = require("cors")
 const multer = require("multer")
 const path = require("path")
+const bodyParser = require("body-parser");
+const session = require("express-session");
 
 const app = express();
 const PORT = 3002;
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:3000', // Указываем конкретный домен
+    credentials: true // Устанавливаем credentials в true
+}));
 app.use(express.json())
 
 const storage = multer.diskStorage({
@@ -23,6 +28,56 @@ const upload = multer({
 })
 
 app.use('/uploads', express.static('uploads'));
+app.use(bodyParser.json());
+
+app.use(session({
+    secret: 'your_secret',
+    resave: false,
+    saveUninitialized: false
+}));
+
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Credentials', 'true');
+    next();
+});
+
+app.post("/api/login", (req, res) => {
+    const { username, password } = req.body;
+
+    db.query("SELECT * FROM users WHERE username = ? AND password = ?", [username, password], (err, result) => {
+        if (err) {
+            res.status(500).send("Internal server error");
+            throw err;
+        }
+
+        if (result.length > 0) {
+            req.session.loggedIn = true;
+            req.session.username = username;
+            req.session.role = result[0].role;
+            res.json({ role: result[0].role });
+        } else {
+            res.status(401).send("Unauthorized");
+        }
+    });
+});
+
+app.get('/api/logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            res.status(500).send("Internal server error");
+            throw err;
+        }
+        res.status(200).send("Logged out successfully");
+    });
+});
+
+app.get("/api/checkLoggedIn", (req, res) => {
+    if (req.session.loggedIn) {
+        res.json({ loggedIn: true, role: req.session.role });
+    } else {
+        res.json({ loggedIn: false });
+    }
+});
 
 
 app.post("/api/addcontest", (req, res)=> {

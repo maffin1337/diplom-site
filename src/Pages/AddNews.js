@@ -8,6 +8,9 @@ function FileUpload() {
     const [file, setFile] = useState();
     const [title, setTitle] = useState("");
     const [text, setText] = useState("");
+    
+    const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
+    const role = localStorage.getItem('role');
 
 
     const handleFile = (e) => {
@@ -40,19 +43,27 @@ function FileUpload() {
     return (
         <>
             <Container className="addnews-container">
-                <div className="file-upload-text">
-                    <p>Публикация новости</p>
-                </div>
-                <Form.Control className="file-upload" type="file" onChange={handleFile}/>
-                <Form.Control className="file-upload" type="text" onChange={(e) => {
-                    setTitle(e.target.value)
-                }} placeholder="Название новости" />
-                <Form.Group className="mb-3" controlId="newsForm.ControlTextarea1">
-                    <Form.Control as="textarea" rows={3} onChange={(e) => {
-                        setText(e.target.value)
-                    }} placeholder="Текст новости" />
-                </Form.Group>
-                <Form.Control className="file-upload" type="submit" onClick={handleUpload}/>
+                {isLoggedIn && (role === "Admin" || role === "Redactor") ?(
+                    <div>
+                        <div className="file-upload-text">
+                            <p>Публикация новости</p>
+                        </div>
+                        <Form.Control className="file-upload" type="file" onChange={handleFile} />
+                        <Form.Control className="file-upload" type="text" onChange={(e) => {
+                            setTitle(e.target.value)
+                        }} placeholder="Название новости" />
+                        <Form.Group className="mb-3" controlId="newsForm.ControlTextarea1">
+                            <Form.Control as="textarea" rows={3} onChange={(e) => {
+                                setText(e.target.value)
+                            }} placeholder="Текст новости" />
+                        </Form.Group>
+                        <Form.Control className="file-upload" type="submit" onClick={handleUpload} />
+                    </div>
+                ) : (
+                    <div className="addnews-usertext">
+                        <p>Данная страница вам недоступна {role}</p>
+                    </div>
+                )}
             </Container>
         </>
     )
