@@ -5,10 +5,13 @@ import "./Contest.css";
 
 function AddContest(){
 
+    const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
+
     const [style, setStyle] = useState("");
     const [numberName, setNumberName] = useState("");
     const [crewName, setCrewName] = useState("");
     const [director, setDirector] = useState("");
+    const [email, setEmail] = useState("");
     const [crewCount, setCrewCount] = useState("");
 
     const titleToVar = (title) => {
@@ -16,26 +19,55 @@ function AddContest(){
     }
 
     const addContest = () => {
-        Axios.post("http://localhost:3002/api/addcontest", {style: style, numberName: numberName, crewName: crewName, director: director, crewCount: crewCount})
+        Axios.post("http://localhost:3002/api/addcontest", {style: style, numberName: numberName, crewName: crewName, director: director, directorEmail: email, crewCount: crewCount})
     }
 
     return (
         <div className="contest-form">
             <Form>
-                <DropdownMenu className="contest-form-item" onTitleChange={titleToVar}/>
-                <Form.Control className="contest-form-item" type="text" onChange={(e) => {
-                    setNumberName(e.target.value)
-                }} placeholder="Название номера" />
-                <Form.Control className="contest-form-item" type="text" onChange={(e) => {
-                    setCrewName(e.target.value)
-                }} placeholder="Название команды" />
-                <Form.Control className="contest-form-item" type="text" onChange={(e) => {
-                    setDirector(e.target.value)
-                }} placeholder="ФИО руководителя" />
-                <Form.Control className="contest-form-item" type="number" onChange={(e) => {
-                    setCrewCount(e.target.value)
-                }} placeholder="Количество участников" />
-                <Form.Control className="contest-form-item" type="submit" onClick={addContest} placeholder="Отправить" />
+                {isLoggedIn ? (
+                    <div>
+                        {style === "Изобразительное искусство" ? (
+                            <div>
+                                <DropdownMenu className="contest-form-item" onTitleChange={titleToVar} />
+                                <Form.Control className="contest-form-item" type="text" onChange={(e) => {
+                                    setCrewName(e.target.value)
+                                }} placeholder="ФИО" />
+                                <Form.Control className="contest-form-item" type="email" onChange={(e) => {
+                                    setEmail(e.target.value)
+                                }} placeholder="Почта" />
+                                <Form.Control className="contest-form-item" type="submit" onClick={addContest} placeholder="Отправить" />
+                            </div>
+                        ) : (
+                            <div>
+                                <DropdownMenu className="contest-form-item" onTitleChange={titleToVar} />
+                                <Form.Control className="contest-form-item" type="text" onChange={(e) => {
+                                    setNumberName(e.target.value)
+                                }} placeholder="Название номера" />
+                                <Form.Control className="contest-form-item" type="text" onChange={(e) => {
+                                    setCrewName(e.target.value)
+                                }} placeholder="Название команды" />
+                                <Form.Control className="contest-form-item" type="text" onChange={(e) => {
+                                    setDirector(e.target.value)
+                                }} placeholder="ФИО руководителя" />
+                                <Form.Control className="contest-form-item" type="email" onChange={(e) => {
+                                    setEmail(e.target.value)
+                                }} placeholder="Почта руководителя" />
+                                <Form.Control className="contest-form-item" type="number" onChange={(e) => {
+                                    setCrewCount(e.target.value)
+                                }} placeholder="Количество участников" />
+                                <Form.Control className="contest-form-item" type="submit" onClick={addContest} placeholder="Отправить" />
+                                    <div className="contest-info">
+                                        <p>Перед заполнением заявки на конкурс, прочтите положение конкурса</p>
+                                    </div>
+                            </div>
+                        )}
+                    </div>
+                ) : (
+                    <div className="contest-auth-text">
+                        <p>Принять участие в конкурсе могут только авторизированные пользователи</p>
+                    </div>
+                )}
             </Form>
         </div>
     )
@@ -78,9 +110,6 @@ export const Contest = () => (
         <Container className="contest-container">
             <div className="contest-form">
                 <AddContest/>
-            </div>
-            <div className="contest-info">
-                <p>Перед заполнением заявки на конкурс, прочтите положение конкурса</p>
             </div>
         </Container>
     </>

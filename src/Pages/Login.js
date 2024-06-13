@@ -1,16 +1,47 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Container, Button, Form } from "react-bootstrap";
+import { Container, Button, Form, Alert } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import "./Login.css";
 
+export const handleLogout = async (setIsLoggedIn, setRole) => {
+    try {
+        localStorage.removeItem('loggedIn');
+        localStorage.removeItem('role');
+
+        await axios.get("http://localhost:3002/api/logout");
+        setIsLoggedIn(false);
+        setRole('');
+        window.location.reload();
+    } catch (error) {
+        console.error("Error logging out:", error);
+    }
+};
+
 function LogIn() {
-    const [username, setUserName] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [role, setRole] = useState('');
     const [loggedIn, setLoggedIn] = useState(false);
     const [error, setError] = useState('');
+    const navigate = useNavigate();
 
     axios.defaults.withCredentials = true;
+
+    const generateHashPassword = async (password) => {
+        try {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(password);
+            const hash = await window.crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hash));
+            const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+            return hashHex;
+        } catch (error) {
+            console.error('Error generating hash password:', error);
+            setError('Ошибка при генерации пароля');
+            throw error;
+        }
+    };
 
     useEffect(() => {
         const checkLoggedIn = async () => {
@@ -27,10 +58,10 @@ function LogIn() {
 
         checkLoggedIn();
 
-        const isLoggedIn = localStorage.getItem('LoggedIn') === 'true';
+        const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
         const savedRole = localStorage.getItem('role');
 
-        if(isLoggedIn && savedRole) {
+        if (isLoggedIn && savedRole) {
             setLoggedIn(true);
             setRole(savedRole);
         }
@@ -38,62 +69,42 @@ function LogIn() {
 
     const handleLogin = async () => {
         try {
-            const response = await axios.post("http://localhost:3002/api/login", { username, password });
-            
-            localStorage.setItem('loggedIn', true);
+            const hashedPassword = await generateHashPassword(password);
+            const response = await axios.post("http://localhost:3002/api/login", { email, password: hashedPassword });
+
+            localStorage.setItem('loggedIn', 'true');
             localStorage.setItem('role', response.data.role);
-            
             setRole(response.data.role);
             setLoggedIn(true);
+            setError(''); // Clear any previous error message
+            navigate("/");
+            window.location.reload();
         } catch (error) {
+            console.error('Error logging in:', error);
             setError('Неправильный логин или пароль');
-        }
-    };
-
-    const handleLogout = async () => {
-        try {
-            localStorage.removeItem('loggedIn');
-            localStorage.removeItem('role');
-            
-            await axios.get("http://localhost:3002/api/logout");
-            setLoggedIn(false);
-            setRole('');
-        } catch (error) {
-            console.error("Error logging out:", error);
         }
     };
 
     return (
         <Container className="login-container">
-            {loggedIn ? (
-                <div>
-                    <div className="d-flex justify-content-center">
-                        <Button className="logout-button" onClick={handleLogout}>Выйти</Button>
-                    </div>
+            <div className="login-header">
+                <p>Авторизация</p>
+            </div>
+            <Form className="login-form">
+                <Form.Control className="login-form-item" type="email"
+                    value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Почта" />
+                <Form.Control className="login-form-item" type="password"
+                    value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Пароль" />
+                <div className="d-flex justify-content-center">
+                    <Button className="login-button" onClick={handleLogin}>Войти</Button>
                 </div>
-            ) : (
-                <div>
-                    <div className="login-header">
-                        <p>Авторизация</p>
-                    </div>
-                    <Form className="login-form">
-                        <Form.Control className="login-form-item" type="text"
-                            value={username} onChange={(e) => setUserName(e.target.value)} placeholder="Логин" />
-                        <Form.Control className="login-form-item" type="password"
-                            value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Пароль" />
-                        <div className="d-flex justify-content-center">
-                            <Button className="login-button" onClick={handleLogin}>Войти</Button>
-                        </div>
-                        {error && <p style={{ color: 'red' }}>{error}</p>}
-                    </Form>
-                </div>
-            )}
+                {error && <Alert variant="danger">{error}</Alert>}
+            </Form>
         </Container>
     );
 }
 
 export default LogIn;
-
 
 export const Login = () => {
     return <LogIn />;

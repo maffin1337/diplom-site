@@ -61,7 +61,7 @@ function FileUpload() {
                     </div>
                 ) : (
                     <div className="addnews-usertext">
-                        <p>Данная страница вам недоступна {role}</p>
+                        <p>Данная страница вам недоступна</p>
                     </div>
                 )}
             </Container>

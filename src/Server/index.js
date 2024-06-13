@@ -42,9 +42,9 @@ app.use((req, res, next) => {
 });
 
 app.post("/api/login", (req, res) => {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
-    db.query("SELECT * FROM users WHERE username = ? AND password = ?", [username, password], (err, result) => {
+    db.query("SELECT * FROM users WHERE email = ? AND password = ?", [email, password], (err, result) => {
         if (err) {
             res.status(500).send("Internal server error");
             throw err;
@@ -52,7 +52,7 @@ app.post("/api/login", (req, res) => {
 
         if (result.length > 0) {
             req.session.loggedIn = true;
-            req.session.username = username;
+            req.session.email = email;
             req.session.role = result[0].role;
             res.json({ role: result[0].role });
         } else {
@@ -86,11 +86,12 @@ app.post("/api/addcontest", (req, res)=> {
     const numberName = req.body.numberName;
     const crewName = req.body.crewName;
     const director = req.body.director;
+    const directorEmail = req.body.directorEmail
     const crewCount = req.body.crewCount;
 
-    console.log(style,numberName,crewName,director,crewCount)
+    console.log(style,numberName,crewName,director,directorEmail,crewCount)
 
-    db.query("INSERT INTO contest (Style, NumberName, CrewName, Director, CrewCount) VALUES (?,?,?,?,?)",[style,numberName,crewName,director,crewCount], (err,result)=> {
+    db.query("INSERT INTO contest (Style, NumberName, CrewName, Director, DirectorEmail, CrewCount) VALUES (?,?,?,?,?,?)",[style,numberName,crewName,director,directorEmail,crewCount], (err,result)=> {
         if(err) {
             console.log(err)
             return;
@@ -137,71 +138,13 @@ app.post("/api/addclass", (req, res) => {
 
     console.log(classes, fullName)
 
-    switch (classes) {
-        case 'dance_class10':
-            db.query("INSERT INTO dance_class10 (FullName) VALUES (?)", [fullName], (err, result) => {
-                if (err) {
-                    console.log(err)
-                    return;
-                }
-                console.log(result)
-            });
-            break;
-        case 'dance_class11':
-            db.query("INSERT INTO dance_class11 (FullName) VALUES (?)", [fullName], (err, result) => {
-                if (err) {
-                    console.log(err)
-                    return;
-                }
-                console.log(result)
-            });
-            break;
-        case 'dance_class12':
-            db.query("INSERT INTO dance_class12 (FullName) VALUES (?)", [fullName], (err, result) => {
-                if (err) {
-                    console.log(err)
-                    return;
-                }
-                console.log(result)
-            });
-            break;
-        case 'art_class10':
-            db.query("INSERT INTO art_class10 (FullName) VALUES (?)", [fullName], (err, result) => {
-                if (err) {
-                    console.log(err)
-                    return;
-                }
-                console.log(result)
-            });
-            break;
-        case 'art_class11':
-            db.query("INSERT INTO art_class11 (FullName) VALUES (?)", [fullName], (err, result) => {
-                if (err) {
-                    console.log(err)
-                    return;
-                }
-                console.log(result)
-            });
-            break;
-        case 'art_class12':
-            db.query("INSERT INTO art_class12 (FullName) VALUES (?)", [fullName], (err, result) => {
-                if (err) {
-                    console.log(err)
-                    return;
-                }
-                console.log(result)
-            });
-            break;
-        case 'art_class13':
-            db.query("INSERT INTO art_class13 (FullName) VALUES (?)", [fullName], (err, result) => {
-                if (err) {
-                    console.log(err)
-                    return;
-                }
-                console.log(result)
-            });
-            break;
-    }
+    db.query("INSERT INTO classes (ClassName, FullName) VALUES (?, ?)", [classes, fullName], (err, result) => {
+        if(err){
+            console.log(err)
+            return;
+        }
+        console.log(result)
+    })
 })
 
 app.post('/api/postnews', (req, res) => {
@@ -229,6 +172,19 @@ app.post('/api/postpicture', upload.single('image'), (req, res) => {
         res.send("File uploaded successfully!");
     });
 });
+
+app.post('/api/adduser', (req, res) => {
+    const email = req.body.email;
+    const password = req.body.password;
+
+    db.query("INSERT INTO users (email, password) VALUES (?, ?)", [email, password], (err, result) => {
+        if(err) {
+            console.log(err)
+            return;
+        }
+        console.log(result)
+    })
+})
 
 app.listen(PORT, () => {
     console.log(`Server is running on ${PORT}`)

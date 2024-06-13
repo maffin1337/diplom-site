@@ -14,6 +14,7 @@ import {About} from "./Pages/About";
 import {Contest} from "./Pages/Contest";
 import {AddNews} from "./Pages/AddNews";
 import {Login} from "./Pages/Login";
+import {Register} from "./Pages/Register";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
       <Route path="/contest" Component={Contest} />
       <Route path="/addnews" Component={AddNews} />
       <Route path="/login" Component={Login} />
+      <Route path='/register' Component={Register} />
     </Routes>
     </Router>
     <Footer />

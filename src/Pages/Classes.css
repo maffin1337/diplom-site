@@ -35,3 +35,9 @@
     background-color: #ee8003;
     border-color: #ee8003;
 }
+
+.master-auth-text{
+    color: black;
+    text-align: center;
+    font-size: 18px;
+}

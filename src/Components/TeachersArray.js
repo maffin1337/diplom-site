@@ -13,6 +13,8 @@ import Art4 from "../Images/Art4.jpg";
 
 function SignIn(){
 
+    const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
+
     const [classes, setClasses] = useState("");
     const [fullName, setFullName] = useState("");
 
@@ -146,13 +148,27 @@ function SignIn(){
                         <Modal.Title>Запись на мастер-класс</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <Form.Control type="text" placeholder="ФИО" onChange={(e) => {
-                            setFullName(e.target.value)
-                        }} />
+                        {isLoggedIn ? (
+                            <div>
+                                <Form.Control type="text" placeholder="ФИО" onChange={(e) => {
+                                    setFullName(e.target.value)
+                                }} />
+                            </div>
+                        ) : (
+                            <div className="master-auth-text">
+                                <p>Записаться на мастер-класс могут только авторизированные пользователи</p>
+                            </div>
+                        )}
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button onClick={handleClose}>Отмена</Button>
-                        <Button onClick={addClass}>Записаться</Button>
+                        {isLoggedIn ? (
+                            <div>
+                                <Button onClick={handleClose}>Отмена</Button>
+                                <Button onClick={addClass}>Записаться</Button>
+                            </div>
+                        ) : (
+                            <></>
+                        )}
                     </Modal.Footer>
                 </Modal>
             </Container>
