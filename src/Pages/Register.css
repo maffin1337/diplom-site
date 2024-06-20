@@ -1,21 +1,21 @@
-.login-container{
+.register-container{
     background-color: #2b2a29;
 }
 
-.login-header{
+.register-header{
     color: #fefefe;
     font-size: 28px;
     text-align: center;
     padding-top: 20px;
 }
 
-.login-form-item{
+.register-form-item{
     margin-top: 20px;
     width: 50%;
     margin-left: 25%;
 }
 
-.login-button{
+.register-button{
     margin-top: 20px;
     margin-bottom: 20px;
     background-color: #ff8b03;
@@ -23,7 +23,7 @@
     color: #2b2a29;
 }
 
-.login-button:hover{
+.register-button:hover{
     background-color: #ee8003;
     border-color: #ee8003;
 }

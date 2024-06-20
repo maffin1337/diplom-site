@@ -2,6 +2,7 @@ import Axios from "axios";
 import React, { useState } from "react";
 import { Container, Form, Button, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import "./Register.css";
 
 function Registration() {
     const [email, setEmail] = useState("");
@@ -41,6 +42,9 @@ function Registration() {
     return (
         <>
             <Container className="register-container">
+                <div className="register-header">
+                    <p>Регистрация</p>
+                </div>
                 <Form className="register-form">
                     <Form.Control className="register-form-item" type="email"
                         onChange={(e) => setEmail(e.target.value)} placeholder="Почта" />
@@ -51,7 +55,9 @@ function Registration() {
                     {error && <Alert variant="danger">{error}</Alert>}
                     {success && <Alert variant="success">{success}</Alert>}
                 </Form>
-                <Button className="register-button" onClick={addUser}>Зарегистрироваться</Button>
+                <div className="d-flex justify-content-center">
+                    <Button className="register-button" onClick={addUser}>Зарегистрироваться</Button>
+                </div>
             </Container>
         </>
     );

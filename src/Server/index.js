@@ -80,8 +80,8 @@ app.get("/api/checkLoggedIn", (req, res) => {
 });
 
 
-app.post("/api/addcontest", (req, res)=> {
-    
+app.post("/api/addcontest", (req, res) => {
+
     const style = req.body.style;
     const numberName = req.body.numberName;
     const crewName = req.body.crewName;
@@ -89,20 +89,21 @@ app.post("/api/addcontest", (req, res)=> {
     const directorEmail = req.body.directorEmail
     const crewCount = req.body.crewCount;
 
-    console.log(style,numberName,crewName,director,directorEmail,crewCount)
+    console.log(style, numberName, crewName, director, directorEmail, crewCount)
 
-    db.query("INSERT INTO contest (Style, NumberName, CrewName, Director, DirectorEmail, CrewCount) VALUES (?,?,?,?,?,?)",[style,numberName,crewName,director,directorEmail,crewCount], (err,result)=> {
-        if(err) {
-            console.log(err)
-            return;
-        }
-        console.log(result)
-    });
+    db.query("INSERT INTO contest (Style, NumberName, CrewName, Director, DirectorEmail, CrewCount) VALUES (?,?,?,?,?,?)",
+        [style, numberName, crewName, director, directorEmail, crewCount], (err, result) => {
+            if (err) {
+                console.log(err)
+                return;
+            }
+            console.log(result)
+        });
 })
 
 app.get("/api/getnews", (req, res) => {
     db.query("SELECT * FROM news ORDER BY ID", (err, result) => {
-        if(err){
+        if (err) {
             console.log(err)
             return;
         }
@@ -113,7 +114,7 @@ app.get("/api/getnews", (req, res) => {
 app.get("/api/getnewsbyId/:id", (req, res) => {
     const id = req.params.id;
     db.query("SELECT * FROM news WHERE ID = ?", id, (err, result) => {
-        if(err){
+        if (err) {
             console.log(err)
             return;
         }
@@ -123,7 +124,7 @@ app.get("/api/getnewsbyId/:id", (req, res) => {
 
 app.get("/api/getnewsmain", (req, res) => {
     db.query("SELECT * FROM (SELECT * FROM news ORDER BY ID DESC LIMIT 3) a ORDER BY ID", (err, result) => {
-        if(err){
+        if (err) {
             console.log(err)
             return;
         }
@@ -132,14 +133,14 @@ app.get("/api/getnewsmain", (req, res) => {
 })
 
 app.post("/api/addclass", (req, res) => {
-    
+
     const classes = req.body.classes;
     const fullName = req.body.fullName;
 
     console.log(classes, fullName)
 
     db.query("INSERT INTO classes (ClassName, FullName) VALUES (?, ?)", [classes, fullName], (err, result) => {
-        if(err){
+        if (err) {
             console.log(err)
             return;
         }
@@ -151,7 +152,7 @@ app.post('/api/postnews', (req, res) => {
     const title = req.body.title;
     const text = req.body.text;
     db.query("INSERT INTO news (Title, MainText) VALUES (?, ?)", [title, text], (err, result) => {
-        if(err) {
+        if (err) {
             console.log(err)
             return;
         }
@@ -163,7 +164,7 @@ app.post('/api/postpicture', upload.single('image'), (req, res) => {
     const image = req.file.filename;
     const title = req.body.title;
     db.query("UPDATE news SET Image = ? where Title = ?", [image, title], (err, result) => {
-        if(err) {
+        if (err) {
             console.log(err);
             return;
         }
@@ -178,7 +179,7 @@ app.post('/api/adduser', (req, res) => {
     const password = req.body.password;
 
     db.query("INSERT INTO users (email, password) VALUES (?, ?)", [email, password], (err, result) => {
-        if(err) {
+        if (err) {
             console.log(err)
             return;
         }
